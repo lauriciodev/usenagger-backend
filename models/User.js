@@ -2,7 +2,6 @@ const connection = require("../databases/connection");
 
 class User {
   //criar usuario
-
   async create(nome, email, password) {
     try {
       await connection
@@ -12,6 +11,29 @@ class User {
     } catch (erro) {
       console.log(erro);
       return false;
+    }
+  }
+
+  //listando todos os usuarios
+  async getAll() {
+    try {
+      let result = await connection.select().table("usuarios");
+      return result;
+    } catch (erro) {
+      console.log(erro);
+    }
+  }
+
+  //listando usuario especifico
+  async getById(id) {
+    try {
+      let result = await connection
+        .select()
+        .where({ id: id })
+        .table("usuarios");
+      return result;
+    } catch (erro) {
+      console.log(erro);
     }
   }
 
