@@ -1,11 +1,13 @@
 const connection = require("../databases/connection");
+const bcrypt = require("bcrypt");
 
 class User {
   //criar usuario
   async create(nome, email, password) {
     try {
+      let hash = bcrypt.hash(password, 10);
       await connection
-        .insert({ nome: nome, email: email, password: password, role: 0 })
+        .insert({ nome: nome, email: email, password: hash, role: 0 })
         .table("usuarios");
       return true;
     } catch (erro) {
