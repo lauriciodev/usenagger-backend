@@ -61,6 +61,24 @@ class UserController {
       res.send("email não encontrado !");
     }
   }
+
+  //atualizando dados do usuario
+  async updateUser(req, res) {
+    let { id, nome, email, role } = req.body;
+    let result = await User.update(id, nome, email, role);
+
+    if (result != undefined) {
+      if (result.status) {
+        res.send("usuario atualizado");
+      } else {
+        res.status(406);
+        res.send(result.erro);
+      }
+    } else {
+      res.status(406);
+      res.send("erro");
+    }
+  }
 }
 
 module.exports = new UserController();

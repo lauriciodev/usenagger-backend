@@ -71,6 +71,45 @@ class User {
       return false;
     }
   }
+
+  //atualizando dados do usuario;
+  async update(id, nome, email, role) {
+    let user = await this.getById(id);
+    if (user != undefined) {
+      let updateUser = {};
+
+      if (email != undefined) {
+        if (email != user.email) {
+          let emailExists = await this.verifyEmail(email);
+          if (emailExists == false) {
+            updateUser.email = email;
+          } else {
+            return { status: false, erro: "email já em uso!" };
+          }
+        }
+
+        if (nome != undefined) {
+          updateUser.nome = nome;
+        }
+
+        if (role != undefined) {
+          updateUser.role = role;
+        }
+
+        //enviando dados atualizados
+
+        try {
+          await connection
+            .update(updateUser)
+            .where({ id: id })
+            .table("usuarios");
+          return { status: true };
+        } catch (erro) {
+          console.log(erro);
+        }
+      }
+    }
+  }
 }
 
 module.exports = new User();
