@@ -1,0 +1,23 @@
+{
+  "name": "usernagger-backend",
+  "version": "1.0.0",
+  "description": "Projeto para gerenciamento de usuario -- estou fazendo com o conhecimento adquirido no curso \"guia do programador \" professro victor lima,",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LauricioX/usernagger-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LauricioX/usernagger-backend/issues"
+  },
+  "homepage": "https://github.com/LauricioX/usernagger-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "knex": "^2.3.0"
+  }
+}
