@@ -34,7 +34,7 @@ class UserController {
     }
   }
 
-  //buscando usuario especifico
+  //buscando usuario id especifico
   async getById(req, res) {
     let id = req.params.id;
     let response = await User.getById(id);
@@ -45,6 +45,20 @@ class UserController {
     } else {
       res.status(404);
       res.send("usuario não encontrado");
+    }
+  }
+
+  //buscando usuario por email especifico;
+  async getUserByEmail(req, res) {
+    let { email } = req.body;
+
+    let result = await User.getByEmail(email);
+    if (result.length > 0) {
+      res.status(200);
+      res.send(result);
+    } else {
+      res.status(404);
+      res.send("email não encontrado !");
     }
   }
 }

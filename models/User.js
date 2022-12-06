@@ -5,7 +5,7 @@ class User {
   //criar usuario
   async create(nome, email, password) {
     try {
-      let hash = bcrypt.hash(password, 10);
+      let hash = await bcrypt.hash(password, 10);
       await connection
         .insert({ nome: nome, email: email, password: hash, role: 0 })
         .table("usuarios");
@@ -33,6 +33,20 @@ class User {
         .select()
         .where({ id: id })
         .table("usuarios");
+      return result;
+    } catch (erro) {
+      console.log(erro);
+    }
+  }
+
+  //listando usuario por email especifico
+  async getByEmail(email) {
+    try {
+      let result = await connection
+        .select()
+        .where({ email: email })
+        .table("usuarios");
+
       return result;
     } catch (erro) {
       console.log(erro);
