@@ -72,42 +72,45 @@ class User {
     }
   }
 
-  //atualizando dados do usuario;
+  //atualizando dados;
+
   async update(id, nome, email, role) {
+    //verificando a existencia do email
+
     let user = await this.getById(id);
     if (user != undefined) {
-      let updateUser = {};
+      let editeUser = {};
 
+      //email foi passado?
       if (email != undefined) {
+        //email é diferente do email atual
         if (email != user.email) {
           let emailExists = await this.verifyEmail(email);
           if (emailExists == false) {
-            updateUser.email = email;
+            editeUser.email = email;
           } else {
-            return { status: false, erro: "email já em uso!" };
+            return { status: false, erro: "email já existe !" };
           }
         }
-
-        if (nome != undefined) {
-          updateUser.nome = nome;
-        }
-
-        if (role != undefined) {
-          updateUser.role = role;
-        }
-
-        //enviando dados atualizados
-
-        try {
-          await connection
-            .update(updateUser)
-            .where({ id: id })
-            .table("usuarios");
-          return { status: true };
-        } catch (erro) {
-          console.log(erro);
-        }
       }
+
+      if (nome != undefined) {
+        editeUser.nome = nome;
+      }
+
+      if (role != undefined) {
+        editeUser.role = role;
+      }
+
+      //enviando dados atualizados
+      try {
+        await connection.update(editeUser).where({ id: id }).table("usuarios");
+        return { status: true };
+      } catch (erro) {
+        return { status: false, erro: erro };
+      }
+    } else {
+      return { status: false, erro: "o usuario não existe !" };
     }
   }
 }
