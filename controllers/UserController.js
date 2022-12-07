@@ -83,6 +83,7 @@ class UserController {
   //criando token
   async recoverPassword(req, res) {
     let email = req.body.email;
+    //verificação se email exite
     let result = await Token.create(email);
     if (result.status) {
       res.send("" + result.token);
