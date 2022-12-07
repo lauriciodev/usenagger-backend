@@ -1,5 +1,5 @@
 const User = require("../models/User");
-
+const Token = require("../models/Token");
 class UserController {
   //criando usuarios;
   async create(req, res) {
@@ -62,6 +62,8 @@ class UserController {
     }
   }
 
+  //editando usuauarios
+
   async edit(req, res) {
     let { id, nome, role, email } = req.body;
     let result = await User.update(id, email, nome, role);
@@ -75,6 +77,17 @@ class UserController {
     } else {
       res.status(406);
       res.send("erro no servidor");
+    }
+  }
+
+  //criando token
+  async recoverPassword(req, res) {
+    let email = req.body.email;
+    let result = await Token.create(email);
+    if (result.status) {
+      res.send("" + result.token);
+    } else {
+      res.send(result.erro);
     }
   }
 }

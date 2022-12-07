@@ -7,4 +7,5 @@ router.get("/user", UserController.getAllUsers);
 router.get("/user/:id", UserController.getById);
 router.post("/users", UserController.getUserByEmail);
 router.put("/user", UserController.edit);
+router.post("/recover", UserController.recoverPassword);
 module.exports = router;
