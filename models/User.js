@@ -1,5 +1,6 @@
 const connection = require("../databases/connection");
 const bcrypt = require("bcrypt");
+const Token = require("./Token");
 
 class User {
   //criar usuario
@@ -114,6 +115,18 @@ class User {
     } else {
       return { status: false, erro: "o usuario não existe !" };
     }
+  }
+
+  async changePassword(password, id, token) {
+    let hash = await bcrypt.hash(password, 10);
+
+    await connection
+      .update({
+        password: hash,
+      })
+      .where({ id: id })
+      .table("usuarios");
+    await Token.setUsed(token);
   }
 }
 

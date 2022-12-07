@@ -22,6 +22,7 @@ class CreateToken {
     }
   }
 
+  //criando token
   async create(email) {
     try {
       let user = await this.getForEmail(email);
@@ -43,6 +44,36 @@ class CreateToken {
     } catch (erro) {
       return { erro: erro };
     }
+  }
+
+  //validando token
+  async validate(token) {
+    try {
+      let tokenExists = await connection
+        .select()
+        .where({ token: token })
+        .table("tokens");
+
+      if (tokenExists.length > 0) {
+        let tk = tokenExists[0];
+        if (tk.used) {
+          return { status: false };
+        } else {
+          return { status: true, token: tk };
+        }
+      } else {
+        return false;
+      }
+    } catch (erro) {
+      console.erro(erro);
+    }
+  }
+
+  async setUsed(token) {
+    await connection
+      .update({ used: 1 })
+      .where({ token: token })
+      .table("tokens");
   }
 }
 

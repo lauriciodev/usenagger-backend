@@ -86,9 +86,32 @@ class UserController {
     //verificação se email exite
     let result = await Token.create(email);
     if (result.status) {
+      res.status(200);
       res.send("" + result.token);
     } else {
+      res.status(404);
       res.send(result.erro);
+    }
+  }
+
+  //usando token para alterar senha;
+
+  async changePassword(req, res) {
+    let { token, password } = req.body;
+
+    let isValidToken = await Token.validate(token);
+
+    if (isValidToken.status) {
+      await User.changePassword(
+        password,
+        isValidToken.token.user_id,
+        isValidToken.token.token
+      );
+      res.status(200);
+      res.send("senha alterada");
+    } else {
+      res.status(406);
+      res.send("token inválido !");
     }
   }
 }
