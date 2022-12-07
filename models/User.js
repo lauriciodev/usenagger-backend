@@ -33,7 +33,7 @@ class User {
         .select()
         .where({ id: id })
         .table("usuarios");
-      return result;
+      return result[0];
     } catch (erro) {
       console.log(erro);
     }
@@ -71,22 +71,24 @@ class User {
       return false;
     }
   }
+  //atualização de dados do usuario
 
-  //atualizando dados;
-
-  async update(id, nome, email, role) {
+  async update(id, email, nome, role) {
     //verificando a existencia do email
-
     let user = await this.getById(id);
+
     if (user != undefined) {
       let editeUser = {};
 
       //email foi passado?
       if (email != undefined) {
         //email é diferente do email atual
-        if (email != user.email) {
+        if (email == user.email) {
+          editeUser.email = email;
+        } else {
           let emailExists = await this.verifyEmail(email);
-          if (emailExists == false) {
+          //email passado já está em uso?
+          if (emailExists === false) {
             editeUser.email = email;
           } else {
             return { status: false, erro: "email já existe !" };

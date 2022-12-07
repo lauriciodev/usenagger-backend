@@ -62,11 +62,9 @@ class UserController {
     }
   }
 
-  //atualizando dados do usuario
-  async updateUser(req, res) {
-    let { id, nome, email, role } = req.body;
-    let result = await User.update(id, nome, email, role);
-
+  async edit(req, res) {
+    let { id, nome, role, email } = req.body;
+    let result = await User.update(id, email, nome, role);
     if (result != undefined) {
       if (result.status) {
         res.send("usuario atualizado");
@@ -76,7 +74,7 @@ class UserController {
       }
     } else {
       res.status(406);
-      res.send("erro");
+      res.send("erro no servidor");
     }
   }
 }
