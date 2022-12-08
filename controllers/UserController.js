@@ -131,7 +131,7 @@ class UserController {
       let passwordIsCorrect = await bcrypt.compare(password, user[0].password);
 
       if (passwordIsCorrect) {
-        let token = jwt.sign({ email: email, role: user.role }, secret, {
+        let token = jwt.sign({ email: email, role: user[0].role }, secret, {
           expiresIn: "24H",
         });
         res.status(200);
