@@ -1,5 +1,11 @@
 const User = require("../models/User");
 const Token = require("../models/Token");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+//secret jwt
+const secret = "lauricio";
+
 class UserController {
   //criando usuarios;
   async create(req, res) {
@@ -112,6 +118,31 @@ class UserController {
     } else {
       res.status(406);
       res.send("token inválido !");
+    }
+  }
+
+  //gerando webtoken se credenciais corretas;]
+
+  async login(req, res) {
+    let { email, password } = req.body;
+
+    let user = await User.getByEmail(email);
+    if (user.length > 0) {
+      let passwordIsCorrect = await bcrypt.compare(password, user[0].password);
+
+      if (passwordIsCorrect) {
+        let token = jwt.sign({ email: email, role: user.role }, secret, {
+          expiresIn: "24H",
+        });
+        res.status(200);
+        res.json({ token: token });
+      } else {
+        res.status(406);
+        res.send("senha incorreta");
+      }
+    } else {
+      res.status(406);
+      res.send("email inválido");
     }
   }
 }
